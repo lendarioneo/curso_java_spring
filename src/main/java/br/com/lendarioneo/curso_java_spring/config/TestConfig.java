@@ -1,7 +1,7 @@
 package br.com.lendarioneo.curso_java_spring.config;
 
 import br.com.lendarioneo.curso_java_spring.entities.User;
-import br.com.lendarioneo.curso_java_spring.repository.UserRepository;
+import br.com.lendarioneo.curso_java_spring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
