@@ -24,13 +24,16 @@ public class Order implements Serializable {
     @JoinColumn(name = "client_id")
     private User client;
 
+    private Integer orderStatus;
+
     public Order() {
     }
 
-    public Order(Long id, Instant moment, User client) {
+    public Order(Long id, Instant moment, User client, OrderStatus orderStatus) {
         this.id = id;
         this.moment = moment;
         this.client = client;
+        this.orderStatus = orderStatus.getCode();
     }
 
     public Long getId() {
@@ -60,6 +63,15 @@ public class Order implements Serializable {
         return this;
     }
 
+    public OrderStatus getOrderStatus() {
+        return OrderStatus.valueOf(this.orderStatus);
+    }
+
+    public Order setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus.getCode();
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,12 +79,13 @@ public class Order implements Serializable {
         Order order = (Order) o;
         return Objects.equals(getId(), order.getId()) &&
                 Objects.equals(getMoment(), order.getMoment()) &&
-                Objects.equals(getClient(), order.getClient());
+                Objects.equals(getClient(), order.getClient()) &&
+                getOrderStatus() == order.getOrderStatus();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getMoment(), getClient());
+        return Objects.hash(getId(), getMoment(), getClient(), getOrderStatus());
     }
 
     @Override
@@ -81,6 +94,7 @@ public class Order implements Serializable {
                 "id=" + id +
                 ", moment=" + moment +
                 ", client=" + client +
+                ", orderStatus=" + orderStatus +
                 '}';
     }
 }
