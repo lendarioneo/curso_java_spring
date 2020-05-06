@@ -1,20 +1,24 @@
 package br.com.lendarioneo.curso_java_spring.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
+@Table(name = "tb_category")
 public class Category implements Serializable {
     private static final Long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    //@ManyToMany (mappedBy = "categories")
+    @Transient
+    private Set<Product> products = new HashSet<>();
 
     public Category(Long id, String name) {
         this.id = id;
@@ -46,18 +50,23 @@ public class Category implements Serializable {
         return this;
     }
 
+    public Set<Product> getProducts() {
+        return products;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Category)) return false;
         Category category = (Category) o;
         return Objects.equals(getId(), category.getId()) &&
-                Objects.equals(getName(), category.getName());
+                Objects.equals(getName(), category.getName()) &&
+                Objects.equals(getProducts(), category.getProducts());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName());
+        return Objects.hash(getId(), getName(), getProducts());
     }
 
     @Override
@@ -65,6 +74,7 @@ public class Category implements Serializable {
         return "Category{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", products=" + products +
                 '}';
     }
 }
