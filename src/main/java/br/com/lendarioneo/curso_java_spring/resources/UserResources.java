@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping (value = "/users")
+@RequestMapping(value = "/users")
 public class UserResources {
 
     @Autowired
@@ -25,8 +24,8 @@ public class UserResources {
         return ResponseEntity.ok().body(users);
     }
 
-    @GetMapping (value = "/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id){
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<User> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(this.userService.findById(id));
     }
 }

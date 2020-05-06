@@ -1,12 +1,11 @@
 package br.com.lendarioneo.curso_java_spring.entities;
 
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +20,11 @@ public class User implements Serializable {
     private String email;
     private String phone;
     private String password;
+
+    @JsonIgnore
+    @OneToMany (mappedBy = "client")
+    private List<Order> orders = new ArrayList<>();
+
 
     public User() {
     }
@@ -78,6 +82,10 @@ public class User implements Serializable {
         return this;
     }
 
+    public List<Order> getOrders() {
+        return orders;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -87,12 +95,13 @@ public class User implements Serializable {
                 Objects.equals(getName(), user.getName()) &&
                 Objects.equals(getEmail(), user.getEmail()) &&
                 Objects.equals(getPhone(), user.getPhone()) &&
-                Objects.equals(getPassword(), user.getPassword());
+                Objects.equals(getPassword(), user.getPassword()) &&
+                Objects.equals(getOrders(), user.getOrders());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getEmail(), getPhone(), getPassword());
+        return Objects.hash(getId(), getName(), getEmail(), getPhone(), getPassword(), getOrders());
     }
 
     @Override
@@ -103,6 +112,7 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
+                ", orders=" + orders +
                 '}';
     }
 }
