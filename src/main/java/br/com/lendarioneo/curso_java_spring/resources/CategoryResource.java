@@ -1,7 +1,7 @@
 package br.com.lendarioneo.curso_java_spring.resources;
 
-import br.com.lendarioneo.curso_java_spring.entities.User;
-import br.com.lendarioneo.curso_java_spring.services.UserService;
+import br.com.lendarioneo.curso_java_spring.entities.Category;
+import br.com.lendarioneo.curso_java_spring.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,20 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/users")
-public class UserResources {
+@RequestMapping(value = "/categories")
+public class CategoryResource {
 
     @Autowired
-    private UserService service;
+    private CategoryService service;
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll() {
-        List<User> users = service.findAll();
-        return ResponseEntity.ok().body(users);
+    public ResponseEntity<List<Category>> getAll() {
+        return ResponseEntity.ok().body(this.service.findAll());
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id) {
+    public ResponseEntity<Category> getById(@PathVariable Long id) {
         return ResponseEntity.ok().body(this.service.findById(id));
     }
 }
