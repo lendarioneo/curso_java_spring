@@ -1,4 +1,4 @@
-package br.com.lendarioneo.curso_java_spring.entities;
+package br.com.lendarioneo.curso_java_spring.entities.enuns;
 
 public enum OrderStatus {
     WAITING_PAYMENT(1),

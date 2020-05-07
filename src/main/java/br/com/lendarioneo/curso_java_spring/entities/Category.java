@@ -1,5 +1,7 @@
 package br.com.lendarioneo.curso_java_spring.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -16,11 +18,12 @@ public class Category implements Serializable {
     private Long id;
     private String name;
 
-    //@ManyToMany (mappedBy = "categories")
-    @Transient
+    @JsonIgnore
+    @ManyToMany (mappedBy = "categories")
     private Set<Product> products = new HashSet<>();
 
     public Category(Long id, String name) {
+        super();
         this.id = id;
         this.name = name;
     }
@@ -28,26 +31,20 @@ public class Category implements Serializable {
     public Category() {
     }
 
-    public static Long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
     public Long getId() {
         return id;
     }
 
-    public Category setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public Category setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return this;
     }
 
     public Set<Product> getProducts() {
@@ -60,13 +57,12 @@ public class Category implements Serializable {
         if (!(o instanceof Category)) return false;
         Category category = (Category) o;
         return Objects.equals(getId(), category.getId()) &&
-                Objects.equals(getName(), category.getName()) &&
-                Objects.equals(getProducts(), category.getProducts());
+                Objects.equals(getName(), category.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getProducts());
+        return Objects.hash(getId(), getName());
     }
 
     @Override

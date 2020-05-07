@@ -1,10 +1,11 @@
 package br.com.lendarioneo.curso_java_spring.entities;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "tb_product")
@@ -20,11 +21,15 @@ public class Product implements Serializable {
     private Double price;
     private String imgURL;
 
-    //@ManyToMany(mappedBy = "products")
-    @Transient
+    @ManyToMany
+    @JoinTable(
+            name = "tb_product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
 
     public Product(Long id, String name, String description, Double price, String imgURL) {
+        super();
         this.id = id;
         this.name = name;
         this.description = description;
@@ -35,53 +40,44 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public static Long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
     public Long getId() {
         return id;
     }
 
-    public Product setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public Product setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public Product setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
-        return this;
     }
 
     public Double getPrice() {
         return price;
     }
 
-    public Product setPrice(Double price) {
+    public void setPrice(Double price) {
         this.price = price;
-        return this;
     }
 
     public String getImgURL() {
         return imgURL;
     }
 
-    public Product setImgURL(String imgURL) {
+    public void setImgURL(String imgURL) {
         this.imgURL = imgURL;
-        return this;
     }
 
     public Set<Category> getCategories() {
@@ -97,13 +93,12 @@ public class Product implements Serializable {
                 Objects.equals(getName(), product.getName()) &&
                 Objects.equals(getDescription(), product.getDescription()) &&
                 Objects.equals(getPrice(), product.getPrice()) &&
-                Objects.equals(getImgURL(), product.getImgURL()) &&
-                Objects.equals(getCategories(), product.getCategories());
+                Objects.equals(getImgURL(), product.getImgURL());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getDescription(), getPrice(), getImgURL(), getCategories());
+        return Objects.hash(getId(), getName(), getDescription(), getPrice(), getImgURL());
     }
 
     @Override

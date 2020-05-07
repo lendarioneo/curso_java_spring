@@ -1,6 +1,7 @@
 package br.com.lendarioneo.curso_java_spring.entities;
 
 
+import br.com.lendarioneo.curso_java_spring.entities.enuns.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
