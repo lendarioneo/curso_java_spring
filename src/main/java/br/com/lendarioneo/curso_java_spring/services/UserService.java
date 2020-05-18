@@ -2,6 +2,7 @@ package br.com.lendarioneo.curso_java_spring.services;
 
 import br.com.lendarioneo.curso_java_spring.entities.User;
 import br.com.lendarioneo.curso_java_spring.repositories.UserRepository;
+import br.com.lendarioneo.curso_java_spring.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        return this.repository.findById(id).get();
+        return this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User insert(User user) {
