@@ -19,6 +19,9 @@ public class Category implements Serializable {
     private String name;
 
     @JsonIgnore
+    /**
+     * Many to many aqui está usando mappedBy para referenciar lá na classe Product o atributo do tipo Categoria
+     */
     @ManyToMany (mappedBy = "categories")
     private Set<Product> products = new HashSet<>();
 

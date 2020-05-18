@@ -1,11 +1,12 @@
 package br.com.lendarioneo.curso_java_spring.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "tb_product")
@@ -15,18 +16,35 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private String description;
     private Double price;
     private String imgURL;
 
+    /**
+     * Utilizado para definir que uma associação é de muitos para muitos.
+     *
+     *  No JoinTable:
+     * - Cria um mapeamento entre a classe atual e a classe usada como atributo, para que gere uma tabela MxM;
+     * - name = Nome da tabela MxM;
+     * - JoinColumns refere-se as colunas da entidade de dominio que serão usadas no join;
+     * - JoinColumn especifica o nome da coluna na tabela MxM que vai guardar a referencia para o dono da relação;
+     * - InverseJoinColumns especifica o nome da coluna na tabela MxM que vai guardar a referencia para a outra tabela;
+     * */
     @ManyToMany
     @JoinTable(
             name = "tb_product_category",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
+
+
+    /**
+     * Utilizado para definir a relação de um para muitos;
+     * mappedBy é o parametro que informa qual atributo, da classe X relacionada, guarda a chave primária.
+     */
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> orderItems = new HashSet<>();
 
     public Product(Long id, String name, String description, Double price, String imgURL) {
         super();
@@ -82,6 +100,15 @@ public class Product implements Serializable {
 
     public Set<Category> getCategories() {
         return categories;
+    }
+
+    @JsonIgnore
+    public Set<Order> getorders() {
+        Set<Order> orders = new HashSet<>();
+        for (OrderItem item : orderItems) {
+            orders.add(item.getOrder());
+        }
+        return orders;
     }
 
     @Override

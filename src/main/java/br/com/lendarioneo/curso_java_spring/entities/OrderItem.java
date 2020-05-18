@@ -1,6 +1,7 @@
 package br.com.lendarioneo.curso_java_spring.entities;
 
 import br.com.lendarioneo.curso_java_spring.entities.pk.OrderItemPk;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -13,14 +14,21 @@ import java.util.Objects;
 public class OrderItem implements Serializable {
     private static final Long serialVersionUID = 1L;
 
+    /**
+     * O EmbeddedId busca dentro da classe relacionada a coluna que representa o id. No caso do OrderItemPK,
+     * como não tem um campo especifico de ID, os dois atributos que são Order e Products, são verificados e
+     * suas colunas de Id passam a compor a chave composta dessa nova tabela "tb_ordem_item".
+     */
     @EmbeddedId
-    private OrderItemPk id;
+    private OrderItemPk id = new OrderItemPk();
 
     private Integer quantity;
     private Double price;
 
     public OrderItem(Order order, Product product, Integer quantity, Double price) {
-        this.id.setOrder(order).setProduct(product);
+        super();
+        this.id.setOrder(order);
+        this.id.setProduct(product);
         this.quantity = quantity;
         this.price = price;
     }
@@ -28,6 +36,7 @@ public class OrderItem implements Serializable {
     public OrderItem() {
     }
 
+    @JsonIgnore
     public Order getOrder() {
         return this.id.getOrder();
     }
