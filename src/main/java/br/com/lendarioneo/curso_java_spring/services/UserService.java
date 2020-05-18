@@ -20,4 +20,8 @@ public class UserService {
     public User findById(Long id){
        return this.repository.findById(id).get();
     }
+
+    public User insert(User user) {
+        return this.repository.save(user);
+    }
 }
