@@ -13,15 +13,28 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    public List<User> findAll(){
+    public List<User> findAll() {
         return this.repository.findAll();
     }
 
-    public User findById(Long id){
-       return this.repository.findById(id).get();
+    public User findById(Long id) {
+        return this.repository.findById(id).get();
     }
 
     public User insert(User user) {
         return this.repository.save(user);
+    }
+
+    public void delete(Long id) {
+        this.repository.deleteById(id);
+    }
+
+    public User update(Long id, User user){
+        User userTmp = repository.getOne(id);
+        userTmp.setName(user.getName())
+                .setEmail(user.getEmail())
+                .setPassword(user.getPassword())
+                .setPhone(user.getPhone());
+        return repository.save(userTmp);
     }
 }
